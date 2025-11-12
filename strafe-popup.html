@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Twitch Pop-Up Banner</title>
+  <title>Twitch Pop-Up Banner Rotation</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
@@ -27,22 +27,28 @@
       gap: 20px;
       box-shadow: 0 0 25px rgba(0,0,0,0.5);
       opacity: 0;
-      animation: popIn 1.2s ease forwards;
       backdrop-filter: blur(8px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
     }
 
-    @keyframes popIn {
-      0% {opacity: 0; transform: translateX(-50%) scale(0.8);}
-      60% {opacity: 1; transform: translateX(-50%) scale(1.05);}
-      100% {transform: translateX(-50%) scale(1);}
+    .popup.show {
+      opacity: 1;
+      transform: translateX(-50%) scale(1);
+    }
+
+    .popup.hide {
+      opacity: 0;
+      transform: translateX(-50%) scale(0.9);
     }
 
     .popup img {
       width: 80px;
       height: 80px;
-      object-fit: cover;
+      object-fit: contain;
       border-radius: 12px;
       border: 2px solid rgba(255,255,255,0.4);
+      background: rgba(0,0,0,0.2);
+      padding: 6px;
     }
 
     .popup .text {
@@ -77,14 +83,76 @@
   </style>
 </head>
 <body>
-  <div class="popup">
-    <img src="https://gamerbulk.com/wp-content/uploads/2025/10/Strafe-apple-core-meltdown.webp" alt="Item 1">
-    <img src="https://gamerbulk.com/wp-content/uploads/2025/02/NICR-Energy-Drink-Front.webp" alt="Item 2">
+  <div class="popup" id="popup">
+    <img id="img1" src="https://gamerbulk.com/wp-content/uploads/2025/10/Strafe-apple-core-meltdown.webp" alt="Image 1">
+    <img id="img2" src="https://gamerbulk.com/wp-content/uploads/2025/02/NICR-Energy-Drink-Front.webp" alt="Image 2">
     <div class="text">
-      <div class="title">STRAFE</div>
-      <div class="subtitle">USE MY REFERRAL</div>
-      <div class="referral"><strong>TYFCHO</strong> — FOR MORE INFO</div>
+      <div class="title" id="title">STRAFE</div>
+      <div class="subtitle" id="subtitle">USE MY REFERRAL</div>
+      <div class="referral" id="extra"><strong>TYFCHO</strong> — FOR MORE INFO</div>
     </div>
   </div>
+
+  <script>
+    const popup = document.getElementById('popup');
+    const img1 = document.getElementById('img1');
+    const img2 = document.getElementById('img2');
+    const title = document.getElementById('title');
+    const subtitle = document.getElementById('subtitle');
+    const extra = document.getElementById('extra');
+
+    const cards = [
+      {
+        img1: "https://gamerbulk.com/wp-content/uploads/2025/10/Strafe-apple-core-meltdown.webp",
+        img2: "https://gamerbulk.com/wp-content/uploads/2025/02/NICR-Energy-Drink-Front.webp",
+        title: "STRAFE",
+        subtitle: "USE MY REFERRAL",
+        extra: "<strong>TYFCHO</strong> — FOR MORE INFO"
+      },
+      {
+        img1: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Bluesky_Logo.svg/1024px-Bluesky_Logo.svg.png",
+        img2: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Bluesky_Logo.svg/1024px-Bluesky_Logo.svg.png",
+        title: "Follow me on Bluesky!",
+        subtitle: "@tyfcho.bsky.social",
+        extra: ""
+      },
+      {
+        img1: "https://upload.wikimedia.org/wikipedia/commons/9/98/Discord_logo.svg",
+        img2: "https://upload.wikimedia.org/wikipedia/commons/9/98/Discord_logo.svg",
+        title: "Join the Discord!",
+        subtitle: "!discord",
+        extra: ""
+      },
+      {
+        img1: "https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg",
+        img2: "https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg",
+        title: "Subscribe to me on YouTube!",
+        subtitle: "youtube.com/@Tyfcho",
+        extra: ""
+      }
+    ];
+
+    let index = 0;
+
+    function showCard(i) {
+      popup.classList.remove('show');
+      popup.classList.add('hide');
+      setTimeout(() => {
+        img1.src = cards[i].img1;
+        img2.src = cards[i].img2;
+        title.innerHTML = cards[i].title;
+        subtitle.innerHTML = cards[i].subtitle;
+        extra.innerHTML = cards[i].extra;
+        popup.classList.remove('hide');
+        popup.classList.add('show');
+      }, 800);
+    }
+
+    showCard(index);
+    setInterval(() => {
+      index = (index + 1) % cards.length;
+      showCard(index);
+    }, 5000);
+  </script>
 </body>
 </html>
