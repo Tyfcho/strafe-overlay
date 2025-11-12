@@ -23,8 +23,9 @@
       padding: 20px 30px;
       border-radius: 20px;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 20px;
+      gap: 15px;
       box-shadow: 0 0 25px rgba(0,0,0,0.5);
       opacity: 0;
       backdrop-filter: blur(8px);
@@ -41,6 +42,13 @@
       transform: translateX(-50%) scale(0.9);
     }
 
+    .image-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+    }
+
     .popup img {
       width: 80px;
       height: 80px;
@@ -55,6 +63,8 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
+      align-items: center;
+      text-align: center;
       background: rgba(160, 0, 255, 0.6);
       padding: 12px 16px;
       border-radius: 12px;
@@ -84,17 +94,20 @@
 </head>
 <body>
   <div class="popup" id="popup">
-    <img id="img1" src="https://gamerbulk.com/wp-content/uploads/2025/10/Strafe-apple-core-meltdown.webp" alt="Image 1">
-    <img id="img2" src="https://gamerbulk.com/wp-content/uploads/2025/02/NICR-Energy-Drink-Front.webp" alt="Image 2">
+    <div class="image-container" id="imageContainer">
+      <img id="img1" src="https://gamerbulk.com/wp-content/uploads/2025/10/Strafe-apple-core-meltdown.webp" alt="Image 1">
+      <img id="img2" src="https://gamerbulk.com/wp-content/uploads/2025/02/NICR-Energy-Drink-Front.webp" alt="Image 2">
+    </div>
     <div class="text">
       <div class="title" id="title">STRAFE</div>
       <div class="subtitle" id="subtitle">USE MY REFERRAL</div>
-      <div class="referral" id="extra"><strong>TYFCHO</strong> — FOR MORE INFO</div>
+      <div class="referral" id="extra"><strong>!STRAFE</strong> FOR MORE INFO</div>
     </div>
   </div>
 
   <script>
     const popup = document.getElementById('popup');
+    const imageContainer = document.getElementById('imageContainer');
     const img1 = document.getElementById('img1');
     const img2 = document.getElementById('img2');
     const title = document.getElementById('title');
@@ -103,29 +116,30 @@
 
     const cards = [
       {
+        multiple: true,
         img1: "https://gamerbulk.com/wp-content/uploads/2025/10/Strafe-apple-core-meltdown.webp",
         img2: "https://gamerbulk.com/wp-content/uploads/2025/02/NICR-Energy-Drink-Front.webp",
         title: "STRAFE",
         subtitle: "USE MY REFERRAL",
-        extra: "<strong>TYFCHO</strong> — FOR MORE INFO"
+        extra: "<strong>!STRAFE</strong> FOR MORE INFO"
       },
       {
+        multiple: false,
         img1: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Bluesky_Logo.svg/1024px-Bluesky_Logo.svg.png",
-        img2: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Bluesky_Logo.svg/1024px-Bluesky_Logo.svg.png",
         title: "Follow me on Bluesky!",
         subtitle: "@tyfcho.bsky.social",
         extra: ""
       },
       {
+        multiple: false,
         img1: "https://upload.wikimedia.org/wikipedia/commons/9/98/Discord_logo.svg",
-        img2: "https://upload.wikimedia.org/wikipedia/commons/9/98/Discord_logo.svg",
         title: "Join the Discord!",
         subtitle: "!discord",
         extra: ""
       },
       {
+        multiple: false,
         img1: "https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg",
-        img2: "https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg",
         title: "Subscribe to me on YouTube!",
         subtitle: "youtube.com/@Tyfcho",
         extra: ""
@@ -137,12 +151,30 @@
     function showCard(i) {
       popup.classList.remove('show');
       popup.classList.add('hide');
+
       setTimeout(() => {
-        img1.src = cards[i].img1;
-        img2.src = cards[i].img2;
-        title.innerHTML = cards[i].title;
-        subtitle.innerHTML = cards[i].subtitle;
-        extra.innerHTML = cards[i].extra;
+        const card = cards[i];
+
+        // Reset image container
+        imageContainer.innerHTML = '';
+
+        if (card.multiple) {
+          const image1 = document.createElement('img');
+          image1.src = card.img1;
+          const image2 = document.createElement('img');
+          image2.src = card.img2;
+          imageContainer.appendChild(image1);
+          imageContainer.appendChild(image2);
+        } else {
+          const image = document.createElement('img');
+          image.src = card.img1;
+          imageContainer.appendChild(image);
+        }
+
+        title.innerHTML = card.title;
+        subtitle.innerHTML = card.subtitle;
+        extra.innerHTML = card.extra;
+
         popup.classList.remove('hide');
         popup.classList.add('show');
       }, 800);
