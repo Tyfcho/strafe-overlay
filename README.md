@@ -1,2 +1,2 @@
 # Misc. overlay stuff for streaming
-Overlay for Strafe
+Overlay for my Twitch channel
